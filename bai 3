@@ -1,0 +1,38 @@
+CREATE TABLE customer (
+  customer_id  BIGSERIAL PRIMARY KEY,
+  full_name    TEXT        NOT NULL,
+  email        TEXT        NULL UNIQUE,
+  reward_point INTEGER     NOT NULL DEFAULT 0 CHECK (reward_point >= 0),
+  created_at   DATE        NOT NULL DEFAULT CURRENT_DATE
+);
+
+--  Thêm 7 khách hàng (có 1 người không có email)
+INSERT INTO customer (full_name, email, reward_point, created_at) VALUES
+('Nguyễn Hoài Anh',  'anh.nguyen@example.com', 1200, '2024-07-01'),
+('Trần Bảo',         'bao.tran@example.com',    450, '2024-08-12'),
+('Phạm Minh',        NULL,                      800, '2024-09-09'),   
+('Lê Hồng',          'hong.le@example.com',     300, '2024-09-21'),
+('Đặng Thảo',        'thao.dang@example.com',  2200, '2024-10-03'),
+('Ngô An',           'an.ngo@example.com',     1600, '2024-10-12'),
+('Vũ Hải',           'hai.vu@example.com',      100, '2024-10-20');
+
+danh sách tên khách hàng duy nhất 
+SELECT DISTINCT full_name
+FROM customer
+ORDER BY full_name;
+
+ Khách hàng chưa có email (IS NULL)
+SELECT customer_id, full_name
+FROM customer
+WHERE email IS NULL;
+
+ 3 khách hàng điểm thưởng cao nhất, bỏ qua khách hàng cao điểm nhất
+SELECT customer_id, full_name, reward_point
+FROM customer
+ORDER BY reward_point DESC, customer_id ASC
+LIMIT 3 OFFSET 1;
+
+ Sắp xếp khách hàng theo tên giảm dần
+SELECT customer_id, full_name, email, reward_point
+FROM customer
+ORDER BY full_name DESC;

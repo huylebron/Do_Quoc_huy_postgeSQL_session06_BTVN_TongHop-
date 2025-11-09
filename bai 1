@@ -1,0 +1,44 @@
+
+-- bai 1 :
+
+create schema if not exists db;
+
+
+CREATE TABLE db.product
+(
+    product_id   BIGSERIAL PRIMARY KEY,
+    product_name TEXT           NOT NULL,
+    category     TEXT           NOT NULL,
+    price_vnd    NUMERIC(12, 0) NOT NULL CHECK (price_vnd >= 0),
+    stock_qty    INTEGER        NOT NULL CHECK (stock_qty >= 0),
+    created_at   DATE           NOT NULL DEFAULT CURRENT_DATE
+);
+
+INSERT INTO db.product (product_name, category, price_vnd, stock_qty, created_at)
+VALUES ('iPhone 15', 'Điện tử', 25990000, 12, '2024-10-10'),
+       ('Samsung TV 55"', 'Điện tử', 12990000, 7, '2024-09-05'),
+       ('Nồi chiên không dầu', 'Gia dụng', 1990000, 25, '2024-08-22'),
+       ('Tai nghe Bluetooth', 'Điện tử', 990000, 40, '2024-07-15'),
+       ('Bàn làm việc gỗ', 'Nội thất', 3500000, 9, '2024-06-01');
+
+
+
+-- hien thi toanf bo sang phan
+
+select *
+from db.product p;
+
+-- hien thi 3 san pham co gia cao nhat
+select *
+from db.product p
+order by price_vnd desc limit 3;
+
+-- hien thi san phan danh muc "dien tu" gia < 1000000
+select *
+from db.product p
+where category = 'Điện tử' and price_vnd < 1000000;
+
+-- sap sep theo so liong ton kho tang dan
+select *
+from db.product p
+order by stock_qty asc, product_name asc ;

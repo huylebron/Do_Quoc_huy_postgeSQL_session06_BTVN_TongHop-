@@ -1,0 +1,36 @@
+CREATE TABLE employee (
+  employee_id   BIGSERIAL PRIMARY KEY,
+  full_name     TEXT       NOT NULL,
+  department    TEXT       NOT NULL,
+  salary_vnd    NUMERIC(12,0) NOT NULL CHECK (salary_vnd >= 0),
+  hire_date     DATE       NOT NULL
+);
+
+--  Thêm 6 nhân viên
+INSERT INTO employee (full_name, department, salary_vnd, hire_date) VALUES
+('Nguyễn Văn An',        'IT',       15000000, '2023-02-01'),
+('Trần Thị Lan',         'HR',        9000000, '2023-06-15'),
+('Phạm Nhật Anh',        'IT',       18000000, '2022-11-20'),
+('Lê Minh Đăng',         'Sales',     8000000, '2024-04-10'),
+('Hoàng an Khoa',        'Finance',   5500000, '2023-09-01'), 
+('Vũ Quỳnh',             'Marketing',10000000, '2023-12-05');
+
+--  Cập nhật tăng 10% lương cho phòng IT
+UPDATE employee
+SET salary_vnd = ROUND(salary_vnd * 1.10)
+WHERE department = 'IT';
+
+--  Xóa nhân viên có mức lương < 6,000,000
+DELETE FROM employee
+WHERE salary_vnd < 6000000;
+
+--  Liệt kê nhân viên tên chứa “An” (không phân biệt hoa thường)
+SELECT employee_id, full_name, department, salary_vnd
+FROM employee
+WHERE LOWER(full_name) LIKE '%an%';
+
+-- Nhân viên có ngày vào làm trong khoảng 2023-01-01 đến 2023-12-31
+SELECT employee_id, full_name, hire_date
+FROM employee
+WHERE hire_date BETWEEN '2023-01-01' AND '2023-12-31'
+ORDER BY hire_date;

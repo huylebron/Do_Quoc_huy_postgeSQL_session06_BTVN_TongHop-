@@ -1,0 +1,37 @@
+CREATE TABLE course (
+  course_id       BIGSERIAL PRIMARY KEY,
+  course_name     TEXT           NOT NULL,
+  duration_hours  INTEGER        NOT NULL CHECK (duration_hours > 0),
+  price_vnd       NUMERIC(12,0)  NOT NULL CHECK (price_vnd >= 0),
+  level           TEXT           NOT NULL DEFAULT 'Beginner'
+);
+
+--  Thêm ít nhất 6 khóa học
+INSERT INTO course (course_name, duration_hours, price_vnd, level) VALUES
+('SQL Fundamentals',              24,  800000,  'Beginner'),
+('Advanced SQL Optimization',     36, 1800000,  'Advanced'),
+('Python for Data Engineering',   48, 2200000,  'Intermediate'),
+('Demo: Quick Start Analytics',   6,   100000,  'Beginner'),  
+('Data Modeling in Practice',     32, 1500000,  'Intermediate'),
+('PostgreSQL Administration',     40, 2500000,  'Advanced');
+
+--  Cập nhật giá +15% cho khóa thời lượng > 30 giờ
+UPDATE course
+SET price_vnd = ROUND(price_vnd * 1.15)
+WHERE duration_hours > 30;
+
+--  Xóa khóa học có tên chứa “Demo” 
+DELETE FROM course
+WHERE LOWER(course_name) LIKE '%demo%';
+
+-- Hiển thị khóa học có tên chứa “SQL” 
+SELECT course_id, course_name, duration_hours, price_vnd
+FROM course
+WHERE LOWER(course_name) LIKE '%sql%';
+
+--) Lấy 3 khóa học có giá giữa 500,000 và 2,000,000, sắp xếp giá giảm dần
+SELECT course_id, course_name, price_vnd
+FROM course
+WHERE price_vnd BETWEEN 500000 AND 2000000
+ORDER BY price_vnd DESC
+LIMIT 3;
